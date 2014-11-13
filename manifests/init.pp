@@ -76,6 +76,7 @@ class ssh (
   $ssh_key_type                     = 'ssh-rsa',
   $keys                             = undef,
   $manage_root_ssh_config           = 'false',
+  $sshd_config_maxstartups          = undef,
   $root_ssh_config_content          = "# This file is being maintained by Puppet.\n# DO NOT EDIT\n",
 ) {
 
@@ -97,6 +98,7 @@ class ssh (
       $default_sshd_gssapikeyexchange          = undef
       $default_sshd_pamauthenticationviakbdint = undef
       $default_sshd_gssapicleanupcredentials   = 'yes'
+      $default_sshd_config_maxstartups         = undef
       $default_sshd_acceptenv                  = true
       $default_service_hasstatus               = true
       $default_sshd_config_serverkeybits       = '1024'
@@ -117,6 +119,7 @@ class ssh (
       $default_sshd_gssapikeyexchange          = undef
       $default_sshd_pamauthenticationviakbdint = undef
       $default_sshd_gssapicleanupcredentials   = 'yes'
+      $default_sshd_config_maxstartups          = undef
       $default_sshd_acceptenv                  = true
       $default_service_hasstatus               = true
       $default_sshd_config_serverkeybits       = '1024'
@@ -150,6 +153,7 @@ class ssh (
       $default_sshd_gssapikeyexchange          = undef
       $default_sshd_pamauthenticationviakbdint = undef
       $default_sshd_gssapicleanupcredentials   = 'yes'
+      $default_sshd_config_maxstartups         = undef
       $default_sshd_acceptenv                  = true
       $default_service_hasstatus               = true
       $default_sshd_config_serverkeybits       = '1024'
@@ -167,6 +171,7 @@ class ssh (
       $default_sshd_gssapikeyexchange          = 'yes'
       $default_sshd_pamauthenticationviakbdint = 'yes'
       $default_sshd_gssapicleanupcredentials   = undef
+      $default_sshd_config_maxstartups         = undef
       $default_sshd_acceptenv                  = false
       $default_sshd_config_serverkeybits       = '768'
       $default_ssh_package_adminfile           = undef
@@ -504,6 +509,14 @@ class ssh (
     default: {
       fail("ssh::purge_keys must be 'true' or 'false' and is <${purge_keys}>.")
     }
+  }
+  if $sshd_config_maxstartups == 'USE_DEFAULTS' {
+    $sshd_config_use_maxstartups_real = $default_sshd_config_maxstartups
+  } else {
+    $sshd_config_use_maxstartups_real = $sshd_config_maxstartups
+  }
+  if $sshd_config_use_maxstartups_real != undef {
+    if is_integer($sshd_config_use_maxstartups_real) == false { fail("ssh::sshd_config_maxstartups must be an integer and is set to <${sshd_config_use_maxstartups_real}>.") }
   }
 
   #ssh_config template
