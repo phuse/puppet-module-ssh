@@ -93,7 +93,6 @@ describe 'ssh' do
         it { should contain_file('sshd_config').without_content(/^\s*DenyGroups/) }
         it { should contain_file('sshd_config').without_content(/^\s*AllowUsers/) }
         it { should contain_file('sshd_config').without_content(/^\s*AllowGroups/) }
-        it { should contain_file('sshd_config').with_content(/^MaxStartups/) }
 
         it {
           should contain_service('sshd_service').with({
