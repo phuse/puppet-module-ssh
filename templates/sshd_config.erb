@@ -154,7 +154,11 @@ ClientAliveCountMax <%= @sshd_client_alive_count_max %>
 UseDNS <%= @sshd_config_use_dns_real %>
 <% end -%>
 #PidFile /var/run/sshd.pid
+<% if @sshd_config_use_maxstartups_real != nil -%>
+MaxStartups <%= @sshd_maxstartups %>
+<% else -%>
 #MaxStartups 10
+<% end -%>
 #PermitTunnel no
 #ChrootDirectory none
 
